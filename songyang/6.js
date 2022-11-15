@@ -23,3 +23,51 @@ function levelOrder(root) {
   }
   return res
 }
+
+function levelOrder2(root) {
+  if (!root) return []
+  const res = []
+  let q = [root]
+
+  while (q.length) {
+    const temp = []
+    const value = []
+
+    for (let item of q) {
+      const [val, left, right] = item
+
+      value.push(val)
+      if (left) temp.push(left)
+      if (right) temp.push(right)
+    }
+    q = temp
+    res.push(value)
+  }
+  return res
+}
+
+function levelOrder3(root) {
+  if (!root) return []
+  const res = []
+  let q = [root]
+  let isStartLeft = true
+
+  while (q.length) {
+    const temp = []
+    const value = []
+
+    for (let item of q) {
+      const [val, left, right] = item
+      if (isStartLeft) {
+        value.push(val)
+      } else {
+        value.unshift(val)
+      }
+      if (left) temp.push(left)
+      if (right) temp.push(right)
+    }
+    q = temp
+    res.push(value)
+  }
+  return res
+}
