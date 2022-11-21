@@ -40,3 +40,36 @@ func reverseList(head, tail *ListNode) *ListNode {
 	}
 	return pre
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func inorderTraversal(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+	cur := root
+	var mostRight *TreeNode
+	var res []int
+	for cur != nil {
+		mostRight = cur.Left
+		if mostRight != nil {
+			for mostRight.Right != nil && mostRight.Right != cur {
+				mostRight = mostRight.Right
+			}
+			if mostRight.Right == nil {
+				mostRight.Right = cur
+				cur = cur.Left
+				continue
+			} else {
+				mostRight.Right = nil
+			}
+		}
+		res = append(res, cur.Val)
+		cur = cur.Right
+	}
+	return res
+}
