@@ -9,6 +9,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
+//25. K 个一组翻转链表
 func reverseKGroup(head *ListNode, k int) *ListNode {
 	if head == nil || head.Next == nil || k <= 1 {
 		return head
@@ -47,6 +48,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+//94. 二叉树的中序遍历
 func inorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
@@ -93,6 +95,35 @@ func uniquePaths(m int, n int) int {
 			if j > 0 {
 				f[i][j] += f[i][j-1]
 			}
+		}
+	}
+	return f[m-1][n-1]
+}
+
+//63. 不同路径 II
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+	m := len(obstacleGrid)
+	n := len(obstacleGrid[0])
+
+	f := make([][]int, m, m)
+	for i := 0; i < m; i++ {
+		f[i] = make([]int, n, n)
+		for j := 0; j < n; j++ {
+			if obstacleGrid[i][j] == 1 {
+				f[i][j] = 0
+				continue
+			}
+			if i == 0 && j == 0 {
+				f[i][j] = 1
+			}
+
+			if i > 0 {
+				f[i][j] += f[i-1][j]
+			}
+			if j > 0 {
+				f[i][j] += f[i][j-1]
+			}
+
 		}
 	}
 	return f[m-1][n-1]
