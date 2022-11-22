@@ -73,3 +73,27 @@ func inorderTraversal(root *TreeNode) []int {
 	}
 	return res
 }
+
+//62. 不同路径
+func uniquePaths(m int, n int) int {
+	if m == 0 || n == 0 {
+		return 1
+	}
+	f := make([][]int, m, m)
+	for i := 0; i < m; i++ {
+		f[i] = make([]int, n, n)
+		for j := 0; j < n; j++ {
+			if i == 0 && j == 0 {
+				f[i][j] = 1
+				continue
+			}
+			if i > 0 {
+				f[i][j] += f[i-1][j]
+			}
+			if j > 0 {
+				f[i][j] += f[i][j-1]
+			}
+		}
+	}
+	return f[m-1][n-1]
+}
