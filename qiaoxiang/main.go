@@ -1,7 +1,16 @@
 package main
 
-func main() {
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
+func main() {
+	nums := []int{2, 1, 4, 3, 7, 5, 3}
+	///QuickSort(nums)
+	MergeSort(nums)
+	fmt.Println(nums)
 }
 
 type ListNode struct {
@@ -127,4 +136,83 @@ func uniquePathsWithObstacles(obstacleGrid [][]int) int {
 		}
 	}
 	return f[m-1][n-1]
+}
+
+// QuickSort 快速排序
+func QuickSort(nums []int) {
+	rand.Seed(time.Now().UnixNano())
+	quickSort(nums, 0, len(nums)-1)
+}
+
+func partition(nums []int, l, r int) (int, int) {
+	lt := l
+	gt := r + 1
+	d := rand.Intn(r-l+1) + l
+	nums[l], nums[d] = nums[d], nums[l]
+	v := nums[l]
+	k := l + 1
+	for k < gt {
+		if nums[k] < v {
+			nums[lt+1], nums[k] = nums[k], nums[lt+1]
+			lt++
+			k++
+		} else if nums[k] > v {
+			nums[gt-1], nums[k] = nums[k], nums[gt-1]
+			gt--
+		} else {
+			k++
+		}
+	}
+	nums[lt], nums[l] = nums[l], nums[lt]
+	return lt - 1, gt
+}
+
+func quickSort(nums []int, l, r int) {
+	if l >= r {
+		return
+	}
+	lt, gt := partition(nums, l, r)
+	quickSort(nums, l, lt)
+	quickSort(nums, gt, r)
+}
+
+// MergeSort 归并排序
+func MergeSort(nums []int) {
+	mergeSort(nums, 0, len(nums)-1)
+}
+
+func mergeSort(nums []int, l, r int) {
+	if l >= r {
+		return
+	}
+	mid := (l + r) / 2
+	mergeSort(nums, l, mid)
+	mergeSort(nums, mid+1, r)
+	merge(nums, l, mid, r)
+}
+
+func merge(nums []int, l, mid, r int) {
+	buf := make([]int, r-l+1, r-l+1)
+	for i := l; i <= r; i++ {
+		buf[i-l] = nums[i]
+	}
+	i := 0
+	mid = mid - l
+	j := mid + 1
+	for l <= r {
+		if i > mid {
+			nums[l] = buf[j]
+			j++
+		} else if j >= len(buf) {
+			nums[l] = buf[i]
+			i++
+		} else if buf[j] < buf[i] {
+			nums[l] = buf[j]
+			j++
+		} else {
+			nums[l] = buf[i]
+			i++
+		}
+		l++
+	}
 }
